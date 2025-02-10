@@ -8,13 +8,14 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/filter.css">
 <link rel="stylesheet" href="css/nouislider.min.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
-		<link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+		 <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
         <style>
         html, body, #map {
@@ -25,7 +26,7 @@
         }
 		#labelToggleButton {
             position: absolute;
-            top: 54%;
+            top: 50%;
             left: 1%;
             z-index: 1000;
             background-color: #fff;
@@ -47,6 +48,7 @@
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -60,26 +62,27 @@
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
         <script src="data/Pond_1.js"></script>
-        <script src="data/ProtectionWall_2.js"></script>
-        <script src="data/PWDRoad_3.js"></script>
+        <script src="data/PWDRoad_2.js"></script>
+        <script src="data/ProtectionWall_3.js"></script>
         <script src="data/RoadPuthur_4.js"></script>
-        <script src="data/CorporationRoad_5.js"></script>
-        <script src="data/Stream_6.js"></script>
-        <script src="data/Drainage_7.js"></script>
-        <script src="data/JillaPanchayatRoad_8.js"></script>
-        <script src="data/NH_9.js"></script>
+        <script src="data/Stream_5.js"></script>
+        <script src="data/Drainage_6.js"></script>
+        <script src="data/JillaPanchayatRoad_7.js"></script>
+        <script src="data/NH_8.js"></script>
+        <script src="data/CorporationRoad_9.js"></script>
         <script src="data/Birm_10.js"></script>
         <script src="data/Bridge_11.js"></script>
-        <script src="data/Hump_12.js"></script>
-        <script src="data/Building_13.js"></script>
-        <script src="data/WaterResources_14.js"></script>
-        <script src="data/Dip_15.js"></script>
-        <script src="data/Culvert_16.js"></script>
-        <script src="data/Chira_17.js"></script>
-        <script src="data/PublicTap_18.js"></script>
+        <script src="data/PublicTap_12.js"></script>
+        <script src="data/Hump_13.js"></script>
+        <script src="data/Dip_14.js"></script>
+        <script src="data/Building_15.js"></script>
+        <script src="data/Chira_16.js"></script>
+        <script src="data/WaterResources_17.js"></script>
+        <script src="data/Culvert_18.js"></script>
         <script src="data/Node_19.js"></script>
 		<script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
@@ -166,6 +169,7 @@
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'meters',
@@ -199,87 +203,87 @@
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">pond_name</th>\
-                        <td>' + (feature.properties['pond_name'] !== null ? autolinker.link(feature.properties['pond_name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['pond_name'] !== null ? autolinker.link(String(feature.properties['pond_name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">condition</th>\
-                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(feature.properties['condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(String(feature.properties['condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">peri_non</th>\
-                        <td>' + (feature.properties['peri_non'] !== null ? autolinker.link(feature.properties['peri_non'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['peri_non'] !== null ? autolinker.link(String(feature.properties['peri_non']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">road_name</th>\
-                        <td>' + (feature.properties['road_name'] !== null ? autolinker.link(feature.properties['road_name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['road_name'] !== null ? autolinker.link(String(feature.properties['road_name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">location</th>\
-                        <td>' + (feature.properties['location'] !== null ? autolinker.link(feature.properties['location'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['location'] !== null ? autolinker.link(String(feature.properties['location']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">area</th>\
-                        <td>' + (feature.properties['area'] !== null ? autolinker.link(feature.properties['area'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['area'] !== null ? autolinker.link(String(feature.properties['area']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">depth</th>\
-                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(feature.properties['depth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(String(feature.properties['depth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">stream_ori</th>\
-                        <td>' + (feature.properties['stream_ori'] !== null ? autolinker.link(feature.properties['stream_ori'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['stream_ori'] !== null ? autolinker.link(String(feature.properties['stream_ori']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">ghat</th>\
-                        <td>' + (feature.properties['ghat'] !== null ? autolinker.link(feature.properties['ghat'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['ghat'] !== null ? autolinker.link(String(feature.properties['ghat']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">farming</th>\
-                        <td>' + (feature.properties['farming'] !== null ? autolinker.link(feature.properties['farming'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['farming'] !== null ? autolinker.link(String(feature.properties['farming']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">fish_farm</th>\
-                        <td>' + (feature.properties['fish_farm'] !== null ? autolinker.link(feature.properties['fish_farm'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['fish_farm'] !== null ? autolinker.link(String(feature.properties['fish_farm']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">irrigat</th>\
-                        <td>' + (feature.properties['irrigat'] !== null ? autolinker.link(feature.properties['irrigat'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['irrigat'] !== null ? autolinker.link(String(feature.properties['irrigat']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">drinking</th>\
-                        <td>' + (feature.properties['drinking'] !== null ? autolinker.link(feature.properties['drinking'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['drinking'] !== null ? autolinker.link(String(feature.properties['drinking']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">weed</th>\
-                        <td>' + (feature.properties['weed'] !== null ? autolinker.link(feature.properties['weed'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['weed'] !== null ? autolinker.link(String(feature.properties['weed']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">plastic</th>\
-                        <td>' + (feature.properties['plastic'] !== null ? autolinker.link(feature.properties['plastic'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['plastic'] !== null ? autolinker.link(String(feature.properties['plastic']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">cleaning</th>\
-                        <td>' + (feature.properties['cleaning'] !== null ? autolinker.link(feature.properties['cleaning'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['cleaning'] !== null ? autolinker.link(String(feature.properties['cleaning']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">protection</th>\
-                        <td>' + (feature.properties['protection'] !== null ? autolinker.link(feature.properties['protection'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['protection'] !== null ? autolinker.link(String(feature.properties['protection']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">remark</th>\
-                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(feature.properties['remark'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(String(feature.properties['remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">motorshed</th>\
-                        <td>' + (feature.properties['motorshed'] !== null ? autolinker.link(feature.properties['motorshed'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['motorshed'] !== null ? autolinker.link(String(feature.properties['motorshed']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -300,7 +304,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(42,123,222,1.0)',
+                fillColor: 'rgba(56,158,237,1.0)',
                 interactive: true,
             }
         }
@@ -318,160 +322,91 @@
         });
         bounds_group.addLayer(layer_Pond_1);
         map.addLayer(layer_Pond_1);
-        function pop_ProtectionWall_2(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">material</th>\
-                        <td>' + (feature.properties['material'] !== null ? autolinker.link(feature.properties['material'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">length</th>\
-                        <td>' + (feature.properties['length'] !== null ? autolinker.link(feature.properties['length'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">condition</th>\
-                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(feature.properties['condition'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_ProtectionWall_2_0() {
-            return {
-                pane: 'pane_ProtectionWall_2',
-                opacity: 1,
-                color: 'rgba(152,125,183,1.0)',
-                dashArray: '',
-                lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
-                fillOpacity: 0,
-                interactive: true,
-            }
-        }
-        map.createPane('pane_ProtectionWall_2');
-        map.getPane('pane_ProtectionWall_2').style.zIndex = 402;
-        map.getPane('pane_ProtectionWall_2').style['mix-blend-mode'] = 'normal';
-        var layer_ProtectionWall_2 = new L.geoJson(json_ProtectionWall_2, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_ProtectionWall_2',
-            layerName: 'layer_ProtectionWall_2',
-            pane: 'pane_ProtectionWall_2',
-            onEachFeature: pop_ProtectionWall_2,
-            style: style_ProtectionWall_2_0,
-        });
-        bounds_group.addLayer(layer_ProtectionWall_2);
-        map.addLayer(layer_ProtectionWall_2);
-        function pop_PWDRoad_3(feature, layer) {
+        function pop_PWDRoad_2(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">OID_</th>\
-                        <td>' + (feature.properties['OID_'] !== null ? autolinker.link(feature.properties['OID_'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['OID_'] !== null ? autolinker.link(String(feature.properties['OID_']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Shape_Leng</th>\
-                        <td>' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(String(feature.properties['Shape_Leng']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">StartPoint</th>\
-                        <td>' + (feature.properties['StartPoint'] !== null ? autolinker.link(feature.properties['StartPoint'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['StartPoint'] !== null ? autolinker.link(String(feature.properties['StartPoint']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">EndPoint</th>\
-                        <td>' + (feature.properties['EndPoint'] !== null ? autolinker.link(feature.properties['EndPoint'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['EndPoint'] !== null ? autolinker.link(String(feature.properties['EndPoint']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Category</th>\
-                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(String(feature.properties['Category']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Width</th>\
-                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(feature.properties['Width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(String(feature.properties['Width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">CarWidth</th>\
-                        <td>' + (feature.properties['CarWidth'] !== null ? autolinker.link(feature.properties['CarWidth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['CarWidth'] !== null ? autolinker.link(String(feature.properties['CarWidth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">SurfaceTyp</th>\
-                        <td>' + (feature.properties['SurfaceTyp'] !== null ? autolinker.link(feature.properties['SurfaceTyp'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['SurfaceTyp'] !== null ? autolinker.link(String(feature.properties['SurfaceTyp']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Condition</th>\
-                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(feature.properties['Condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(String(feature.properties['Condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ref_ID</th>\
-                        <td>' + (feature.properties['Ref_ID'] !== null ? autolinker.link(feature.properties['Ref_ID'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ref_ID'] !== null ? autolinker.link(String(feature.properties['Ref_ID']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ward_no</th>\
-                        <td>' + (feature.properties['Ward_no'] !== null ? autolinker.link(feature.properties['Ward_no'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward_no'] !== null ? autolinker.link(String(feature.properties['Ward_no']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">r_code</th>\
-                        <td>' + (feature.properties['r_code'] !== null ? autolinker.link(feature.properties['r_code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['r_code'] !== null ? autolinker.link(String(feature.properties['r_code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">rdsug_nm</th>\
-                        <td>' + (feature.properties['rdsug_nm'] !== null ? autolinker.link(feature.properties['rdsug_nm'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['rdsug_nm'] !== null ? autolinker.link(String(feature.properties['rdsug_nm']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">st_sug_nm</th>\
-                        <td>' + (feature.properties['st_sug_nm'] !== null ? autolinker.link(feature.properties['st_sug_nm'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['st_sug_nm'] !== null ? autolinker.link(String(feature.properties['st_sug_nm']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">end_sug_nm</th>\
-                        <td>' + (feature.properties['end_sug_nm'] !== null ? autolinker.link(feature.properties['end_sug_nm'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['end_sug_nm'] !== null ? autolinker.link(String(feature.properties['end_sug_nm']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">fwidth_R</th>\
-                        <td>' + (feature.properties['fwidth_R'] !== null ? autolinker.link(feature.properties['fwidth_R'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['fwidth_R'] !== null ? autolinker.link(String(feature.properties['fwidth_R']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">fWidth_L</th>\
-                        <td>' + (feature.properties['fWidth_L'] !== null ? autolinker.link(feature.properties['fWidth_L'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['fWidth_L'] !== null ? autolinker.link(String(feature.properties['fWidth_L']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">remark</th>\
-                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(feature.properties['remark'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(String(feature.properties['remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Shape_Le_1</th>\
-                        <td>' + (feature.properties['Shape_Le_1'] !== null ? autolinker.link(feature.properties['Shape_Le_1'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Shape_Le_1'] !== null ? autolinker.link(String(feature.properties['Shape_Le_1']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -481,11 +416,11 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_PWDRoad_3_0() {
+        function style_PWDRoad_2_0() {
             return {
-                pane: 'pane_PWDRoad_3',
+                pane: 'pane_PWDRoad_2',
                 opacity: 1,
-                color: 'rgba(243,166,178,1.0)',
+                color: 'rgba(133,182,111,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -494,101 +429,170 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_PWDRoad_3');
-        map.getPane('pane_PWDRoad_3').style.zIndex = 403;
-        map.getPane('pane_PWDRoad_3').style['mix-blend-mode'] = 'normal';
-        var layer_PWDRoad_3 = new L.geoJson(json_PWDRoad_3, {
+        map.createPane('pane_PWDRoad_2');
+        map.getPane('pane_PWDRoad_2').style.zIndex = 402;
+        map.getPane('pane_PWDRoad_2').style['mix-blend-mode'] = 'normal';
+        var layer_PWDRoad_2 = new L.geoJson(json_PWDRoad_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_PWDRoad_3',
-            layerName: 'layer_PWDRoad_3',
-            pane: 'pane_PWDRoad_3',
-            onEachFeature: pop_PWDRoad_3,
-            style: style_PWDRoad_3_0,
+            dataVar: 'json_PWDRoad_2',
+            layerName: 'layer_PWDRoad_2',
+            pane: 'pane_PWDRoad_2',
+            onEachFeature: pop_PWDRoad_2,
+            style: style_PWDRoad_2_0,
         });
-        bounds_group.addLayer(layer_PWDRoad_3);
-        map.addLayer(layer_PWDRoad_3);
+        bounds_group.addLayer(layer_PWDRoad_2);
+        map.addLayer(layer_PWDRoad_2);
+        function pop_ProtectionWall_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">material</th>\
+                        <td>' + (feature.properties['material'] !== null ? autolinker.link(String(feature.properties['material']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">length</th>\
+                        <td>' + (feature.properties['length'] !== null ? autolinker.link(String(feature.properties['length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">code</th>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">condition</th>\
+                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(String(feature.properties['condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_ProtectionWall_3_0() {
+            return {
+                pane: 'pane_ProtectionWall_3',
+                opacity: 1,
+                color: 'rgba(232,113,141,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_ProtectionWall_3');
+        map.getPane('pane_ProtectionWall_3').style.zIndex = 403;
+        map.getPane('pane_ProtectionWall_3').style['mix-blend-mode'] = 'normal';
+        var layer_ProtectionWall_3 = new L.geoJson(json_ProtectionWall_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ProtectionWall_3',
+            layerName: 'layer_ProtectionWall_3',
+            pane: 'pane_ProtectionWall_3',
+            onEachFeature: pop_ProtectionWall_3,
+            style: style_ProtectionWall_3_0,
+        });
+        bounds_group.addLayer(layer_ProtectionWall_3);
+        map.addLayer(layer_ProtectionWall_3);
         function pop_RoadPuthur_4(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">road_stype</th>\
-                        <td>' + (feature.properties['road_stype'] !== null ? autolinker.link(feature.properties['road_stype'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['road_stype'] !== null ? autolinker.link(String(feature.properties['road_stype']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">road_refid</th>\
-                        <td>' + (feature.properties['road_refid'] !== null ? autolinker.link(feature.properties['road_refid'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['road_refid'] !== null ? autolinker.link(String(feature.properties['road_refid']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">road_name</th>\
-                        <td>' + (feature.properties['road_name'] !== null ? autolinker.link(feature.properties['road_name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['road_name'] !== null ? autolinker.link(String(feature.properties['road_name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">roadstart</th>\
-                        <td>' + (feature.properties['roadstart'] !== null ? autolinker.link(feature.properties['roadstart'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['roadstart'] !== null ? autolinker.link(String(feature.properties['roadstart']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">roadend</th>\
-                        <td>' + (feature.properties['roadend'] !== null ? autolinker.link(feature.properties['roadend'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['roadend'] !== null ? autolinker.link(String(feature.properties['roadend']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">roadcatego</th>\
-                        <td>' + (feature.properties['roadcatego'] !== null ? autolinker.link(feature.properties['roadcatego'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['roadcatego'] !== null ? autolinker.link(String(feature.properties['roadcatego']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">landwidth</th>\
-                        <td>' + (feature.properties['landwidth'] !== null ? autolinker.link(feature.properties['landwidth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['landwidth'] !== null ? autolinker.link(String(feature.properties['landwidth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">carriagewi</th>\
-                        <td>' + (feature.properties['carriagewi'] !== null ? autolinker.link(feature.properties['carriagewi'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['carriagewi'] !== null ? autolinker.link(String(feature.properties['carriagewi']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">FW_Right</th>\
-                        <td>' + (feature.properties['FW_Right'] !== null ? autolinker.link(feature.properties['FW_Right'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['FW_Right'] !== null ? autolinker.link(String(feature.properties['FW_Right']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">FW_Left</th>\
-                        <td>' + (feature.properties['FW_Left'] !== null ? autolinker.link(feature.properties['FW_Left'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['FW_Left'] !== null ? autolinker.link(String(feature.properties['FW_Left']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Condition</th>\
-                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(feature.properties['Condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(String(feature.properties['Condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">road_ward</th>\
-                        <td>' + (feature.properties['road_ward'] !== null ? autolinker.link(feature.properties['road_ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['road_ward'] !== null ? autolinker.link(String(feature.properties['road_ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">r_code</th>\
-                        <td>' + (feature.properties['r_code'] !== null ? autolinker.link(feature.properties['r_code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['r_code'] !== null ? autolinker.link(String(feature.properties['r_code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Node_No</th>\
-                        <td>' + (feature.properties['Node_No'] !== null ? autolinker.link(feature.properties['Node_No'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Node_No'] !== null ? autolinker.link(String(feature.properties['Node_No']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Starting</th>\
-                        <td>' + (feature.properties['Starting'] !== null ? autolinker.link(feature.properties['Starting'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Starting'] !== null ? autolinker.link(String(feature.properties['Starting']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ending</th>\
-                        <td>' + (feature.properties['Ending'] !== null ? autolinker.link(feature.properties['Ending'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ending'] !== null ? autolinker.link(String(feature.properties['Ending']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -602,7 +606,7 @@
             return {
                 pane: 'pane_RoadPuthur_4',
                 opacity: 1,
-                color: 'rgba(164,113,88,1.0)',
+                color: 'rgba(190,178,151,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -625,136 +629,79 @@
         });
         bounds_group.addLayer(layer_RoadPuthur_4);
         map.addLayer(layer_RoadPuthur_4);
-        function pop_CorporationRoad_5(feature, layer) {
+        function pop_Stream_5(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Category</th>\
-                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_CorporationRoad_5_0() {
-            return {
-                pane: 'pane_CorporationRoad_5',
-                opacity: 1,
-                color: 'rgba(229,182,54,1.0)',
-                dashArray: '',
-                lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
-                fillOpacity: 0,
-                interactive: true,
-            }
-        }
-        map.createPane('pane_CorporationRoad_5');
-        map.getPane('pane_CorporationRoad_5').style.zIndex = 405;
-        map.getPane('pane_CorporationRoad_5').style['mix-blend-mode'] = 'normal';
-        var layer_CorporationRoad_5 = new L.geoJson(json_CorporationRoad_5, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_CorporationRoad_5',
-            layerName: 'layer_CorporationRoad_5',
-            pane: 'pane_CorporationRoad_5',
-            onEachFeature: pop_CorporationRoad_5,
-            style: style_CorporationRoad_5_0,
-        });
-        bounds_group.addLayer(layer_CorporationRoad_5);
-        map.addLayer(layer_CorporationRoad_5);
-        function pop_Stream_6(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">near_road</th>\
-                        <td>' + (feature.properties['near_road'] !== null ? autolinker.link(feature.properties['near_road'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['near_road'] !== null ? autolinker.link(String(feature.properties['near_road']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">ward</th>\
-                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(feature.properties['ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(String(feature.properties['ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">length</th>\
-                        <td>' + (feature.properties['length'] !== null ? autolinker.link(feature.properties['length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['length'] !== null ? autolinker.link(String(feature.properties['length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">width</th>\
-                        <td>' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['width'] !== null ? autolinker.link(String(feature.properties['width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">depth</th>\
-                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(feature.properties['depth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(String(feature.properties['depth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">water_use</th>\
-                        <td>' + (feature.properties['water_use'] !== null ? autolinker.link(feature.properties['water_use'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['water_use'] !== null ? autolinker.link(String(feature.properties['water_use']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">agricult</th>\
-                        <td>' + (feature.properties['agricult'] !== null ? autolinker.link(feature.properties['agricult'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['agricult'] !== null ? autolinker.link(String(feature.properties['agricult']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">peri_nonpe</th>\
-                        <td>' + (feature.properties['peri_nonpe'] !== null ? autolinker.link(feature.properties['peri_nonpe'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['peri_nonpe'] !== null ? autolinker.link(String(feature.properties['peri_nonpe']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">bridges</th>\
-                        <td>' + (feature.properties['bridges'] !== null ? autolinker.link(feature.properties['bridges'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['bridges'] !== null ? autolinker.link(String(feature.properties['bridges']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">culvert</th>\
-                        <td>' + (feature.properties['culvert'] !== null ? autolinker.link(feature.properties['culvert'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['culvert'] !== null ? autolinker.link(String(feature.properties['culvert']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">branches</th>\
-                        <td>' + (feature.properties['branches'] !== null ? autolinker.link(feature.properties['branches'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['branches'] !== null ? autolinker.link(String(feature.properties['branches']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">check_dam</th>\
-                        <td>' + (feature.properties['check_dam'] !== null ? autolinker.link(feature.properties['check_dam'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['check_dam'] !== null ? autolinker.link(String(feature.properties['check_dam']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">side_wall</th>\
-                        <td>' + (feature.properties['side_wall'] !== null ? autolinker.link(feature.properties['side_wall'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['side_wall'] !== null ? autolinker.link(String(feature.properties['side_wall']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">condition</th>\
-                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(feature.properties['condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(String(feature.properties['condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">remark</th>\
-                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(feature.properties['remark'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(String(feature.properties['remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -764,11 +711,11 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Stream_6_0() {
+        function style_Stream_5_0() {
             return {
-                pane: 'pane_Stream_6',
+                pane: 'pane_Stream_5',
                 opacity: 1,
-                color: 'rgba(44,123,234,1.0)',
+                color: 'rgba(44,177,238,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -777,61 +724,61 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Stream_6');
-        map.getPane('pane_Stream_6').style.zIndex = 406;
-        map.getPane('pane_Stream_6').style['mix-blend-mode'] = 'normal';
-        var layer_Stream_6 = new L.geoJson(json_Stream_6, {
+        map.createPane('pane_Stream_5');
+        map.getPane('pane_Stream_5').style.zIndex = 405;
+        map.getPane('pane_Stream_5').style['mix-blend-mode'] = 'normal';
+        var layer_Stream_5 = new L.geoJson(json_Stream_5, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Stream_6',
-            layerName: 'layer_Stream_6',
-            pane: 'pane_Stream_6',
-            onEachFeature: pop_Stream_6,
-            style: style_Stream_6_0,
+            dataVar: 'json_Stream_5',
+            layerName: 'layer_Stream_5',
+            pane: 'pane_Stream_5',
+            onEachFeature: pop_Stream_5,
+            style: style_Stream_5_0,
         });
-        bounds_group.addLayer(layer_Stream_6);
-        map.addLayer(layer_Stream_6);
-        function pop_Drainage_7(feature, layer) {
+        bounds_group.addLayer(layer_Stream_5);
+        map.addLayer(layer_Stream_5);
+        function pop_Drainage_6(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Road_Name</th>\
-                        <td>' + (feature.properties['Road_Name'] !== null ? autolinker.link(feature.properties['Road_Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Road_Name'] !== null ? autolinker.link(String(feature.properties['Road_Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Width</th>\
-                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(feature.properties['Width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(String(feature.properties['Width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Depth</th>\
-                        <td>' + (feature.properties['Depth'] !== null ? autolinker.link(feature.properties['Depth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Depth'] !== null ? autolinker.link(String(feature.properties['Depth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Type</th>\
-                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(String(feature.properties['Type']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Condition</th>\
-                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(feature.properties['Condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(String(feature.properties['Condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">length</th>\
-                        <td>' + (feature.properties['length'] !== null ? autolinker.link(feature.properties['length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['length'] !== null ? autolinker.link(String(feature.properties['length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -841,11 +788,11 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Drainage_7_0() {
+        function style_Drainage_6_0() {
             return {
-                pane: 'pane_Drainage_7',
+                pane: 'pane_Drainage_6',
                 opacity: 1,
-                color: 'rgba(255,158,23,1.0)',
+                color: 'rgba(114,155,111,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -854,41 +801,41 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Drainage_7');
-        map.getPane('pane_Drainage_7').style.zIndex = 407;
-        map.getPane('pane_Drainage_7').style['mix-blend-mode'] = 'normal';
-        var layer_Drainage_7 = new L.geoJson(json_Drainage_7, {
+        map.createPane('pane_Drainage_6');
+        map.getPane('pane_Drainage_6').style.zIndex = 406;
+        map.getPane('pane_Drainage_6').style['mix-blend-mode'] = 'normal';
+        var layer_Drainage_6 = new L.geoJson(json_Drainage_6, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Drainage_7',
-            layerName: 'layer_Drainage_7',
-            pane: 'pane_Drainage_7',
-            onEachFeature: pop_Drainage_7,
-            style: style_Drainage_7_0,
+            dataVar: 'json_Drainage_6',
+            layerName: 'layer_Drainage_6',
+            pane: 'pane_Drainage_6',
+            onEachFeature: pop_Drainage_6,
+            style: style_Drainage_6_0,
         });
-        bounds_group.addLayer(layer_Drainage_7);
-        map.addLayer(layer_Drainage_7);
-        function pop_JillaPanchayatRoad_8(feature, layer) {
+        bounds_group.addLayer(layer_Drainage_6);
+        map.addLayer(layer_Drainage_6);
+        function pop_JillaPanchayatRoad_7(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">surfacety</th>\
-                        <td>' + (feature.properties['surfacety'] !== null ? autolinker.link(feature.properties['surfacety'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['surfacety'] !== null ? autolinker.link(String(feature.properties['surfacety']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -898,11 +845,11 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_JillaPanchayatRoad_8_0() {
+        function style_JillaPanchayatRoad_7_0() {
             return {
-                pane: 'pane_JillaPanchayatRoad_8',
+                pane: 'pane_JillaPanchayatRoad_7',
                 opacity: 1,
-                color: 'rgba(164,113,88,1.0)',
+                color: 'rgba(190,178,151,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -911,41 +858,41 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_JillaPanchayatRoad_8');
-        map.getPane('pane_JillaPanchayatRoad_8').style.zIndex = 408;
-        map.getPane('pane_JillaPanchayatRoad_8').style['mix-blend-mode'] = 'normal';
-        var layer_JillaPanchayatRoad_8 = new L.geoJson(json_JillaPanchayatRoad_8, {
+        map.createPane('pane_JillaPanchayatRoad_7');
+        map.getPane('pane_JillaPanchayatRoad_7').style.zIndex = 407;
+        map.getPane('pane_JillaPanchayatRoad_7').style['mix-blend-mode'] = 'normal';
+        var layer_JillaPanchayatRoad_7 = new L.geoJson(json_JillaPanchayatRoad_7, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_JillaPanchayatRoad_8',
-            layerName: 'layer_JillaPanchayatRoad_8',
-            pane: 'pane_JillaPanchayatRoad_8',
-            onEachFeature: pop_JillaPanchayatRoad_8,
-            style: style_JillaPanchayatRoad_8_0,
+            dataVar: 'json_JillaPanchayatRoad_7',
+            layerName: 'layer_JillaPanchayatRoad_7',
+            pane: 'pane_JillaPanchayatRoad_7',
+            onEachFeature: pop_JillaPanchayatRoad_7,
+            style: style_JillaPanchayatRoad_7_0,
         });
-        bounds_group.addLayer(layer_JillaPanchayatRoad_8);
-        map.addLayer(layer_JillaPanchayatRoad_8);
-        function pop_NH_9(feature, layer) {
+        bounds_group.addLayer(layer_JillaPanchayatRoad_7);
+        map.addLayer(layer_JillaPanchayatRoad_7);
+        function pop_NH_8(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Category</th>\
-                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(String(feature.properties['Category']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -955,11 +902,11 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_NH_9_0() {
+        function style_NH_8_0() {
             return {
-                pane: 'pane_NH_9',
+                pane: 'pane_NH_8',
                 opacity: 1,
-                color: 'rgba(145,82,45,1.0)',
+                color: 'rgba(225,89,137,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -968,49 +915,106 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_NH_9');
-        map.getPane('pane_NH_9').style.zIndex = 409;
-        map.getPane('pane_NH_9').style['mix-blend-mode'] = 'normal';
-        var layer_NH_9 = new L.geoJson(json_NH_9, {
+        map.createPane('pane_NH_8');
+        map.getPane('pane_NH_8').style.zIndex = 408;
+        map.getPane('pane_NH_8').style['mix-blend-mode'] = 'normal';
+        var layer_NH_8 = new L.geoJson(json_NH_8, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_NH_9',
-            layerName: 'layer_NH_9',
-            pane: 'pane_NH_9',
-            onEachFeature: pop_NH_9,
-            style: style_NH_9_0,
+            dataVar: 'json_NH_8',
+            layerName: 'layer_NH_8',
+            pane: 'pane_NH_8',
+            onEachFeature: pop_NH_8,
+            style: style_NH_8_0,
         });
-        bounds_group.addLayer(layer_NH_9);
-        map.addLayer(layer_NH_9);
+        bounds_group.addLayer(layer_NH_8);
+        map.addLayer(layer_NH_8);
+        function pop_CorporationRoad_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Category</th>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(String(feature.properties['Category']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Length</th>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_CorporationRoad_9_0() {
+            return {
+                pane: 'pane_CorporationRoad_9',
+                opacity: 1,
+                color: 'rgba(231,113,72,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_CorporationRoad_9');
+        map.getPane('pane_CorporationRoad_9').style.zIndex = 409;
+        map.getPane('pane_CorporationRoad_9').style['mix-blend-mode'] = 'normal';
+        var layer_CorporationRoad_9 = new L.geoJson(json_CorporationRoad_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CorporationRoad_9',
+            layerName: 'layer_CorporationRoad_9',
+            pane: 'pane_CorporationRoad_9',
+            onEachFeature: pop_CorporationRoad_9,
+            style: style_CorporationRoad_9_0,
+        });
+        bounds_group.addLayer(layer_CorporationRoad_9);
+        map.addLayer(layer_CorporationRoad_9);
         function pop_Birm_10(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">rd_name</th>\
-                        <td>' + (feature.properties['rd_name'] !== null ? autolinker.link(feature.properties['rd_name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['rd_name'] !== null ? autolinker.link(String(feature.properties['rd_name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">width</th>\
-                        <td>' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['width'] !== null ? autolinker.link(String(feature.properties['width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">length</th>\
-                        <td>' + (feature.properties['length'] !== null ? autolinker.link(feature.properties['length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['length'] !== null ? autolinker.link(String(feature.properties['length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -1024,7 +1028,7 @@
             return {
                 pane: 'pane_Birm_10',
                 opacity: 1,
-                color: 'rgba(255,158,23,1.0)',
+                color: 'rgba(114,155,111,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -1051,39 +1055,39 @@
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">bridge_nam</th>\
-                        <td>' + (feature.properties['bridge_nam'] !== null ? autolinker.link(feature.properties['bridge_nam'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['bridge_nam'] !== null ? autolinker.link(String(feature.properties['bridge_nam']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Remarks</th>\
-                        <td>' + (feature.properties['Remarks'] !== null ? autolinker.link(feature.properties['Remarks'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Remarks'] !== null ? autolinker.link(String(feature.properties['Remarks']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">length</th>\
-                        <td>' + (feature.properties['length'] !== null ? autolinker.link(feature.properties['length'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['length'] !== null ? autolinker.link(String(feature.properties['length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">width</th>\
-                        <td>' + (feature.properties['width'] !== null ? autolinker.link(feature.properties['width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['width'] !== null ? autolinker.link(String(feature.properties['width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">depth</th>\
-                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(feature.properties['depth'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['depth'] !== null ? autolinker.link(String(feature.properties['depth']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Code</th>\
-                        <td>' + (feature.properties['Code'] !== null ? autolinker.link(feature.properties['Code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Code'] !== null ? autolinker.link(String(feature.properties['Code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -1105,7 +1109,7 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(243,166,178,1.0)',
+                fillColor: 'rgba(133,182,111,1.0)',
                 interactive: true,
             }
         }
@@ -1129,543 +1133,35 @@
         });
         bounds_group.addLayer(layer_Bridge_11);
         map.addLayer(layer_Bridge_11);
-        function pop_Hump_12(feature, layer) {
+        function pop_PublicTap_12(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Hump_12_0() {
-            return {
-                pane: 'pane_Hump_12',
-                radius: 5.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(243,166,178,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Hump_12');
-        map.getPane('pane_Hump_12').style.zIndex = 412;
-        map.getPane('pane_Hump_12').style['mix-blend-mode'] = 'normal';
-        var layer_Hump_12 = new L.geoJson(json_Hump_12, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Hump_12',
-            layerName: 'layer_Hump_12',
-            pane: 'pane_Hump_12',
-            onEachFeature: pop_Hump_12,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Hump_12_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Hump_12);
-        map.addLayer(layer_Hump_12);
-        function pop_Building_13(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">build_name</th>\
-                        <td>' + (feature.properties['build_name'] !== null ? autolinker.link(feature.properties['build_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">bld_code</th>\
-                        <td>' + (feature.properties['bld_code'] !== null ? autolinker.link(feature.properties['bld_code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">ward</th>\
-                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(feature.properties['ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">bld_no</th>\
-                        <td>' + (feature.properties['bld_no'] !== null ? autolinker.link(feature.properties['bld_no'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">place</th>\
-                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">road</th>\
-                        <td>' + (feature.properties['road'] !== null ? autolinker.link(feature.properties['road'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">floor_no</th>\
-                        <td>' + (feature.properties['floor_no'] !== null ? autolinker.link(feature.properties['floor_no'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">grnd_flr</th>\
-                        <td>' + (feature.properties['grnd_flr'] !== null ? autolinker.link(feature.properties['grnd_flr'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">1st_flr</th>\
-                        <td>' + (feature.properties['1st_flr'] !== null ? autolinker.link(feature.properties['1st_flr'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">2nd_flr</th>\
-                        <td>' + (feature.properties['2nd_flr'] !== null ? autolinker.link(feature.properties['2nd_flr'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">total_area</th>\
-                        <td>' + (feature.properties['total_area'] !== null ? autolinker.link(feature.properties['total_area'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">roof</th>\
-                        <td>' + (feature.properties['roof'] !== null ? autolinker.link(feature.properties['roof'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">wall</th>\
-                        <td>' + (feature.properties['wall'] !== null ? autolinker.link(feature.properties['wall'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">floor</th>\
-                        <td>' + (feature.properties['floor'] !== null ? autolinker.link(feature.properties['floor'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">tress</th>\
-                        <td>' + (feature.properties['tress'] !== null ? autolinker.link(feature.properties['tress'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">land_area</th>\
-                        <td>' + (feature.properties['land_area'] !== null ? autolinker.link(feature.properties['land_area'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">category</th>\
-                        <td>' + (feature.properties['category'] !== null ? autolinker.link(feature.properties['category'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">remark</th>\
-                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(feature.properties['remark'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">extrdetail</th>\
-                        <td>' + (feature.properties['extrdetail'] !== null ? autolinker.link(feature.properties['extrdetail'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Building_13_0() {
-            return {
-                pane: 'pane_Building_13',
-                radius: 5.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(164,113,88,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Building_13');
-        map.getPane('pane_Building_13').style.zIndex = 413;
-        map.getPane('pane_Building_13').style['mix-blend-mode'] = 'normal';
-        var layer_Building_13 = new L.geoJson(json_Building_13, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Building_13',
-            layerName: 'layer_Building_13',
-            pane: 'pane_Building_13',
-            onEachFeature: pop_Building_13,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Building_13_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Building_13);
-        map.addLayer(layer_Building_13);
-        function pop_WaterResources_14(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Road</th>\
-                        <td>' + (feature.properties['Road'] !== null ? autolinker.link(feature.properties['Road'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Condition</th>\
-                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(feature.properties['Condition'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">pump</th>\
-                        <td>' + (feature.properties['pump'] !== null ? autolinker.link(feature.properties['pump'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">type</th>\
-                        <td>' + (feature.properties['type'] !== null ? autolinker.link(feature.properties['type'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">working</th>\
-                        <td>' + (feature.properties['working'] !== null ? autolinker.link(feature.properties['working'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">remark</th>\
-                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(feature.properties['remark'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">tank_cap</th>\
-                        <td>' + (feature.properties['tank_cap'] !== null ? autolinker.link(feature.properties['tank_cap'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Category</th>\
-                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_WaterResources_14_0() {
-            return {
-                pane: 'pane_WaterResources_14',
-                radius: 6.0,
-                opacity: 1,
-                color: 'rgba(50,87,128,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(72,123,182,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_WaterResources_14');
-        map.getPane('pane_WaterResources_14').style.zIndex = 414;
-        map.getPane('pane_WaterResources_14').style['mix-blend-mode'] = 'normal';
-        var layer_WaterResources_14 = new L.geoJson(json_WaterResources_14, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_WaterResources_14',
-            layerName: 'layer_WaterResources_14',
-            pane: 'pane_WaterResources_14',
-            onEachFeature: pop_WaterResources_14,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_WaterResources_14_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_WaterResources_14);
-        map.addLayer(layer_WaterResources_14);
-        function pop_Dip_15(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Dip_15_0() {
-            return {
-                pane: 'pane_Dip_15',
-                radius: 5.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(152,125,183,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Dip_15');
-        map.getPane('pane_Dip_15').style.zIndex = 415;
-        map.getPane('pane_Dip_15').style['mix-blend-mode'] = 'normal';
-        var layer_Dip_15 = new L.geoJson(json_Dip_15, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Dip_15',
-            layerName: 'layer_Dip_15',
-            pane: 'pane_Dip_15',
-            onEachFeature: pop_Dip_15,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Dip_15_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Dip_15);
-        map.addLayer(layer_Dip_15);
-        function pop_Culvert_16(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Length</th>\
-                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(feature.properties['Length'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Width</th>\
-                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(feature.properties['Width'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Type</th>\
-                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Condition</th>\
-                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(feature.properties['Condition'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Vent_Heigh</th>\
-                        <td>' + (feature.properties['Vent_Heigh'] !== null ? autolinker.link(feature.properties['Vent_Heigh'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Culvert_16_0() {
-            return {
-                pane: 'pane_Culvert_16',
-                radius: 5.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(152,125,183,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Culvert_16');
-        map.getPane('pane_Culvert_16').style.zIndex = 416;
-        map.getPane('pane_Culvert_16').style['mix-blend-mode'] = 'normal';
-        var layer_Culvert_16 = new L.geoJson(json_Culvert_16, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Culvert_16',
-            layerName: 'layer_Culvert_16',
-            pane: 'pane_Culvert_16',
-            onEachFeature: pop_Culvert_16,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Culvert_16_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Culvert_16);
-        map.addLayer(layer_Culvert_16);
-        function pop_Chira_17(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Type</th>\
-                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Remark</th>\
-                        <td>' + (feature.properties['Remark'] !== null ? autolinker.link(feature.properties['Remark'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Chira_17_0() {
-            return {
-                pane: 'pane_Chira_17',
-                radius: 5.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(145,82,45,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Chira_17');
-        map.getPane('pane_Chira_17').style.zIndex = 417;
-        map.getPane('pane_Chira_17').style['mix-blend-mode'] = 'normal';
-        var layer_Chira_17 = new L.geoJson(json_Chira_17, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Chira_17',
-            layerName: 'layer_Chira_17',
-            pane: 'pane_Chira_17',
-            onEachFeature: pop_Chira_17,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Chira_17_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Chira_17);
-        map.addLayer(layer_Chira_17);
-        function pop_PublicTap_18(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Ward</th>\
-                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(feature.properties['Ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">condition</th>\
-                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(feature.properties['condition'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['condition'] !== null ? autolinker.link(String(feature.properties['condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">working</th>\
-                        <td>' + (feature.properties['working'] !== null ? autolinker.link(feature.properties['working'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['working'] !== null ? autolinker.link(String(feature.properties['working']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">code</th>\
-                        <td>' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">XCOORD</th>\
-                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(feature.properties['XCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">YCOORD</th>\
-                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(feature.properties['YCOORD'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -1675,51 +1171,559 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_PublicTap_18_0() {
+        function style_PublicTap_12_0() {
             return {
-                pane: 'pane_PublicTap_18',
+                pane: 'pane_PublicTap_12',
                 radius: 5.0,
                 opacity: 1,
-                color: 'rgba(50,87,128,1.0)',
+                color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 2.0,
+                weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(72,123,182,1.0)',
+                fillColor: 'rgba(60,137,238,1.0)',
                 interactive: true,
             }
         }
-        map.createPane('pane_PublicTap_18');
-        map.getPane('pane_PublicTap_18').style.zIndex = 418;
-        map.getPane('pane_PublicTap_18').style['mix-blend-mode'] = 'normal';
-        var layer_PublicTap_18 = new L.geoJson(json_PublicTap_18, {
+        map.createPane('pane_PublicTap_12');
+        map.getPane('pane_PublicTap_12').style.zIndex = 412;
+        map.getPane('pane_PublicTap_12').style['mix-blend-mode'] = 'normal';
+        var layer_PublicTap_12 = new L.geoJson(json_PublicTap_12, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_PublicTap_18',
-            layerName: 'layer_PublicTap_18',
-            pane: 'pane_PublicTap_18',
-            onEachFeature: pop_PublicTap_18,
+            dataVar: 'json_PublicTap_12',
+            layerName: 'layer_PublicTap_12',
+            pane: 'pane_PublicTap_12',
+            onEachFeature: pop_PublicTap_12,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_PublicTap_18_0(feature));
+                return L.circleMarker(latlng, style_PublicTap_12_0(feature));
             },
         });
-        bounds_group.addLayer(layer_PublicTap_18);
-        map.addLayer(layer_PublicTap_18);
+        bounds_group.addLayer(layer_PublicTap_12);
+        map.addLayer(layer_PublicTap_12);
+        function pop_Hump_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">code</th>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Hump_13_0() {
+            return {
+                pane: 'pane_Hump_13',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(133,182,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Hump_13');
+        map.getPane('pane_Hump_13').style.zIndex = 413;
+        map.getPane('pane_Hump_13').style['mix-blend-mode'] = 'normal';
+        var layer_Hump_13 = new L.geoJson(json_Hump_13, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Hump_13',
+            layerName: 'layer_Hump_13',
+            pane: 'pane_Hump_13',
+            onEachFeature: pop_Hump_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Hump_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Hump_13);
+        map.addLayer(layer_Hump_13);
+        function pop_Dip_14(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">code</th>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Dip_14_0() {
+            return {
+                pane: 'pane_Dip_14',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Dip_14');
+        map.getPane('pane_Dip_14').style.zIndex = 414;
+        map.getPane('pane_Dip_14').style['mix-blend-mode'] = 'normal';
+        var layer_Dip_14 = new L.geoJson(json_Dip_14, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Dip_14',
+            layerName: 'layer_Dip_14',
+            pane: 'pane_Dip_14',
+            onEachFeature: pop_Dip_14,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Dip_14_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Dip_14);
+        map.addLayer(layer_Dip_14);
+        function pop_Building_15(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">build_name</th>\
+                        <td>' + (feature.properties['build_name'] !== null ? autolinker.link(String(feature.properties['build_name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">bld_code</th>\
+                        <td>' + (feature.properties['bld_code'] !== null ? autolinker.link(String(feature.properties['bld_code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ward</th>\
+                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(String(feature.properties['ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">bld_no</th>\
+                        <td>' + (feature.properties['bld_no'] !== null ? autolinker.link(String(feature.properties['bld_no']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">place</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(String(feature.properties['place']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">road</th>\
+                        <td>' + (feature.properties['road'] !== null ? autolinker.link(String(feature.properties['road']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">floor_no</th>\
+                        <td>' + (feature.properties['floor_no'] !== null ? autolinker.link(String(feature.properties['floor_no']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">grnd_flr</th>\
+                        <td>' + (feature.properties['grnd_flr'] !== null ? autolinker.link(String(feature.properties['grnd_flr']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">1st_flr</th>\
+                        <td>' + (feature.properties['1st_flr'] !== null ? autolinker.link(String(feature.properties['1st_flr']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">2nd_flr</th>\
+                        <td>' + (feature.properties['2nd_flr'] !== null ? autolinker.link(String(feature.properties['2nd_flr']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">total_area</th>\
+                        <td>' + (feature.properties['total_area'] !== null ? autolinker.link(String(feature.properties['total_area']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">roof</th>\
+                        <td>' + (feature.properties['roof'] !== null ? autolinker.link(String(feature.properties['roof']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">wall</th>\
+                        <td>' + (feature.properties['wall'] !== null ? autolinker.link(String(feature.properties['wall']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">floor</th>\
+                        <td>' + (feature.properties['floor'] !== null ? autolinker.link(String(feature.properties['floor']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">tress</th>\
+                        <td>' + (feature.properties['tress'] !== null ? autolinker.link(String(feature.properties['tress']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">land_area</th>\
+                        <td>' + (feature.properties['land_area'] !== null ? autolinker.link(String(feature.properties['land_area']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">category</th>\
+                        <td>' + (feature.properties['category'] !== null ? autolinker.link(String(feature.properties['category']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">remark</th>\
+                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(String(feature.properties['remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">extrdetail</th>\
+                        <td>' + (feature.properties['extrdetail'] !== null ? autolinker.link(String(feature.properties['extrdetail']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Building_15_0() {
+            return {
+                pane: 'pane_Building_15',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Building_15');
+        map.getPane('pane_Building_15').style.zIndex = 415;
+        map.getPane('pane_Building_15').style['mix-blend-mode'] = 'normal';
+        var layer_Building_15 = new L.geoJson(json_Building_15, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Building_15',
+            layerName: 'layer_Building_15',
+            pane: 'pane_Building_15',
+            onEachFeature: pop_Building_15,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Building_15_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Building_15);
+        map.addLayer(layer_Building_15);
+        function pop_Chira_16(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(String(feature.properties['Type']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Remark</th>\
+                        <td>' + (feature.properties['Remark'] !== null ? autolinker.link(String(feature.properties['Remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Chira_16_0() {
+            return {
+                pane: 'pane_Chira_16',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(194,144,162,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Chira_16');
+        map.getPane('pane_Chira_16').style.zIndex = 416;
+        map.getPane('pane_Chira_16').style['mix-blend-mode'] = 'normal';
+        var layer_Chira_16 = new L.geoJson(json_Chira_16, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Chira_16',
+            layerName: 'layer_Chira_16',
+            pane: 'pane_Chira_16',
+            onEachFeature: pop_Chira_16,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Chira_16_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Chira_16);
+        map.addLayer(layer_Chira_16);
+        function pop_WaterResources_17(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">code</th>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Road</th>\
+                        <td>' + (feature.properties['Road'] !== null ? autolinker.link(String(feature.properties['Road']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Condition</th>\
+                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(String(feature.properties['Condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">pump</th>\
+                        <td>' + (feature.properties['pump'] !== null ? autolinker.link(String(feature.properties['pump']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">type</th>\
+                        <td>' + (feature.properties['type'] !== null ? autolinker.link(String(feature.properties['type']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">working</th>\
+                        <td>' + (feature.properties['working'] !== null ? autolinker.link(String(feature.properties['working']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">remark</th>\
+                        <td>' + (feature.properties['remark'] !== null ? autolinker.link(String(feature.properties['remark']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">tank_cap</th>\
+                        <td>' + (feature.properties['tank_cap'] !== null ? autolinker.link(String(feature.properties['tank_cap']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Category</th>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(String(feature.properties['Category']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_WaterResources_17_0() {
+            return {
+                pane: 'pane_WaterResources_17',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(39,180,223,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_WaterResources_17');
+        map.getPane('pane_WaterResources_17').style.zIndex = 417;
+        map.getPane('pane_WaterResources_17').style['mix-blend-mode'] = 'normal';
+        var layer_WaterResources_17 = new L.geoJson(json_WaterResources_17, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_WaterResources_17',
+            layerName: 'layer_WaterResources_17',
+            pane: 'pane_WaterResources_17',
+            onEachFeature: pop_WaterResources_17,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_WaterResources_17_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_WaterResources_17);
+        map.addLayer(layer_WaterResources_17);
+        function pop_Culvert_18(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ward</th>\
+                        <td>' + (feature.properties['Ward'] !== null ? autolinker.link(String(feature.properties['Ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Length</th>\
+                        <td>' + (feature.properties['Length'] !== null ? autolinker.link(String(feature.properties['Length']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Width</th>\
+                        <td>' + (feature.properties['Width'] !== null ? autolinker.link(String(feature.properties['Width']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(String(feature.properties['Type']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Condition</th>\
+                        <td>' + (feature.properties['Condition'] !== null ? autolinker.link(String(feature.properties['Condition']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">code</th>\
+                        <td>' + (feature.properties['code'] !== null ? autolinker.link(String(feature.properties['code']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Vent_Heigh</th>\
+                        <td>' + (feature.properties['Vent_Heigh'] !== null ? autolinker.link(String(feature.properties['Vent_Heigh']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">XCOORD</th>\
+                        <td>' + (feature.properties['XCOORD'] !== null ? autolinker.link(String(feature.properties['XCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YCOORD</th>\
+                        <td>' + (feature.properties['YCOORD'] !== null ? autolinker.link(String(feature.properties['YCOORD']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Culvert_18_0() {
+            return {
+                pane: 'pane_Culvert_18',
+                radius: 5.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Culvert_18');
+        map.getPane('pane_Culvert_18').style.zIndex = 418;
+        map.getPane('pane_Culvert_18').style['mix-blend-mode'] = 'normal';
+        var layer_Culvert_18 = new L.geoJson(json_Culvert_18, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Culvert_18',
+            layerName: 'layer_Culvert_18',
+            pane: 'pane_Culvert_18',
+            onEachFeature: pop_Culvert_18,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Culvert_18_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Culvert_18);
+        map.addLayer(layer_Culvert_18);
         function pop_Node_19(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Node</th>\
-                        <td>' + (feature.properties['Node'] !== null ? autolinker.link(feature.properties['Node'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Node'] !== null ? autolinker.link(String(feature.properties['Node']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">ward</th>\
-                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(feature.properties['ward'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['ward'] !== null ? autolinker.link(String(feature.properties['ward']).replace(/'/g, '\'').replace(/"/g, '&quot;').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -1767,23 +1771,23 @@
         map.addLayer(layer_Node_19);
         var overlaysTree = [
             {label: '<img src="legend/Node_19.png" /> Node', layer: layer_Node_19},
-            {label: '<img src="legend/PublicTap_18.png" /> Public Tap', layer: layer_PublicTap_18},
-            {label: '<img src="legend/Chira_17.png" /> Chira', layer: layer_Chira_17},
-            {label: '<img src="legend/Culvert_16.png" /> Culvert', layer: layer_Culvert_16},
-            {label: '<img src="legend/Dip_15.png" /> Dip', layer: layer_Dip_15},
-            {label: '<img src="legend/WaterResources_14.png" /> Water Resources', layer: layer_WaterResources_14},
-            {label: '<img src="legend/Building_13.png" /> Building', layer: layer_Building_13},
-            {label: '<img src="legend/Hump_12.png" /> Hump', layer: layer_Hump_12},
+            {label: '<img src="legend/Culvert_18.png" /> Culvert', layer: layer_Culvert_18},
+            {label: '<img src="legend/WaterResources_17.png" /> Water Resources', layer: layer_WaterResources_17},
+            {label: '<img src="legend/Chira_16.png" /> Chira', layer: layer_Chira_16},
+            {label: '<img src="legend/Building_15.png" /> Building', layer: layer_Building_15},
+            {label: '<img src="legend/Dip_14.png" /> Dip', layer: layer_Dip_14},
+            {label: '<img src="legend/Hump_13.png" /> Hump', layer: layer_Hump_13},
+            {label: '<img src="legend/PublicTap_12.png" /> Public Tap', layer: layer_PublicTap_12},
             {label: '<img src="legend/Bridge_11.png" /> Bridge', layer: layer_Bridge_11},
             {label: '<img src="legend/Birm_10.png" /> Birm', layer: layer_Birm_10},
-            {label: '<img src="legend/NH_9.png" /> NH', layer: layer_NH_9},
-            {label: '<img src="legend/JillaPanchayatRoad_8.png" /> Jilla Panchayat Road', layer: layer_JillaPanchayatRoad_8},
-            {label: '<img src="legend/Drainage_7.png" /> Drainage', layer: layer_Drainage_7},
-            {label: '<img src="legend/Stream_6.png" /> Stream', layer: layer_Stream_6},
-            {label: '<img src="legend/CorporationRoad_5.png" /> Corporation Road', layer: layer_CorporationRoad_5},
+            {label: '<img src="legend/CorporationRoad_9.png" /> Corporation Road', layer: layer_CorporationRoad_9},
+            {label: '<img src="legend/NH_8.png" /> NH', layer: layer_NH_8},
+            {label: '<img src="legend/JillaPanchayatRoad_7.png" /> Jilla Panchayat Road', layer: layer_JillaPanchayatRoad_7},
+            {label: '<img src="legend/Drainage_6.png" /> Drainage', layer: layer_Drainage_6},
+            {label: '<img src="legend/Stream_5.png" /> Stream', layer: layer_Stream_5},
             {label: '<img src="legend/RoadPuthur_4.png" /> Road Puthur', layer: layer_RoadPuthur_4},
-            {label: '<img src="legend/PWDRoad_3.png" /> PWD Road', layer: layer_PWDRoad_3},
-            {label: '<img src="legend/ProtectionWall_2.png" /> Protection Wall', layer: layer_ProtectionWall_2},
+            {label: '<img src="legend/ProtectionWall_3.png" /> Protection Wall', layer: layer_ProtectionWall_3},
+            {label: '<img src="legend/PWDRoad_2.png" /> PWD Road', layer: layer_PWDRoad_2},
             {label: '<img src="legend/Pond_1.png" /> Pond', layer: layer_Pond_1},
             {label: "Google Satellite", layer: layer_GoogleSatellite_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
@@ -1797,7 +1801,7 @@
         });
         lay.addTo(map);
         setBounds();
-        var searchControl = new L.Control.Search({
+         var searchControl = new L.Control.Search({
     layer: layer_RoadPuthur_4,
     initial: false,
     hideMarkerOnCollapse: true,
@@ -1845,7 +1849,7 @@ textBox.style.height = '25px'; // Adjust the height as needed
 // Append the text box next to the binoculars icon
 binocularsIcon.parentNode.appendChild(textBox);
 var searchControl = new L.Control.Search({
-    layer: layer_Building_13,
+    layer: layer_Building_15,
     initial: false,
     hideMarkerOnCollapse: true,
     propertyName: 'build_name',
@@ -1895,7 +1899,7 @@ var searchControl = new L.Control.Search({
     layer: layer_Pond_1,
     initial: false,
     hideMarkerOnCollapse: true,
-    propertyName: 'well_name',
+    propertyName: 'pond_name',
     moveToLocation: function (latlng, title, map) {
         // Create a marker at the searched location
         var marker = L.marker(latlng, {
@@ -1933,7 +1937,7 @@ binocularsIcon.style.left = 'nill'; // Adjust the percentage as needed
 // Create a text box element
 var textBox = document.createElement('input');
 textBox.type = 'text';
-textBox.value = '<wellsearch';
+textBox.value = '<pondsearch';
 textBox.style.width = '85px'; // Adjust the width as needed
 textBox.style.height = '25px'; // Adjust the height as needed
 // Append the text box next to the binoculars icon
@@ -2004,7 +2008,7 @@ binocularsIcon.parentNode.appendChild(textBox);
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"road_name": "str","road_refid": "str","road_ward": "str","road_stype": "str"};
+        var Filters = {"road_ward": "str","road_stype": "str","road_name": "str","road_refid": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -2094,6 +2098,92 @@ binocularsIcon.parentNode.appendChild(textBox);
           }
           })
         }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_road_ward = document.createElement('div');
+            div_road_ward.id = "div_road_ward";
+            div_road_ward.className= "filterselect";
+            document.getElementById("menu").appendChild(div_road_ward);
+            sel_road_ward = document.createElement('select');
+            sel_road_ward.multiple = true;
+            sel_road_ward.size = 4;
+            sel_road_ward.id = "sel_road_ward";
+            var road_ward_options_str = "";
+            sel_road_ward.onchange = function(){filterFunc()};
+            road_ward_options_str  += '<option value="1">1</option>';
+            road_ward_options_str  += '<option value="10">10</option>';
+            road_ward_options_str  += '<option value="11">11</option>';
+            road_ward_options_str  += '<option value="12">12</option>';
+            road_ward_options_str  += '<option value="13">13</option>';
+            road_ward_options_str  += '<option value="14">14</option>';
+            road_ward_options_str  += '<option value="15">15</option>';
+            road_ward_options_str  += '<option value="16">16</option>';
+            road_ward_options_str  += '<option value="17">17</option>';
+            road_ward_options_str  += '<option value="18">18</option>';
+            road_ward_options_str  += '<option value="19">19</option>';
+            road_ward_options_str  += '<option value="2">2</option>';
+            road_ward_options_str  += '<option value="20">20</option>';
+            road_ward_options_str  += '<option value="21">21</option>';
+            road_ward_options_str  += '<option value="22">22</option>';
+            road_ward_options_str  += '<option value="23">23</option>';
+            road_ward_options_str  += '<option value="3">3</option>';
+            road_ward_options_str  += '<option value="4">4</option>';
+            road_ward_options_str  += '<option value="5">5</option>';
+            road_ward_options_str  += '<option value="6">6</option>';
+            road_ward_options_str  += '<option value="7">7</option>';
+            road_ward_options_str  += '<option value="8">8</option>';
+            road_ward_options_str  += '<option value="9">9</option>';
+            sel_road_ward.innerHTML = road_ward_options_str;
+            div_road_ward.appendChild(sel_road_ward);
+            var lab_road_ward = document.createElement('div');
+            lab_road_ward.innerHTML = 'road_ward';
+            lab_road_ward.className = 'filterlabel';
+            div_road_ward.appendChild(lab_road_ward);
+            var reset_road_ward = document.createElement('div');
+            reset_road_ward.innerHTML = 'clear filter';
+            reset_road_ward.className = 'filterlabel';
+            reset_road_ward.onclick = function() {
+                var options = document.getElementById("sel_road_ward").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_road_ward.appendChild(reset_road_ward);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_road_stype = document.createElement('div');
+            div_road_stype.id = "div_road_stype";
+            div_road_stype.className= "filterselect";
+            document.getElementById("menu").appendChild(div_road_stype);
+            sel_road_stype = document.createElement('select');
+            sel_road_stype.multiple = true;
+            sel_road_stype.size = 4;
+            sel_road_stype.id = "sel_road_stype";
+            var road_stype_options_str = "";
+            sel_road_stype.onchange = function(){filterFunc()};
+            road_stype_options_str  += '<option value="Concrete">Concrete</option>';
+            road_stype_options_str  += '<option value="Earthen">Earthen</option>';
+            road_stype_options_str  += '<option value="Interlock">Interlock</option>';
+            road_stype_options_str  += '<option value="Metalled">Metalled</option>';
+            road_stype_options_str  += '<option value="PMC">PMC</option>';
+            sel_road_stype.innerHTML = road_stype_options_str;
+            div_road_stype.appendChild(sel_road_stype);
+            var lab_road_stype = document.createElement('div');
+            lab_road_stype.innerHTML = 'road_stype';
+            lab_road_stype.className = 'filterlabel';
+            div_road_stype.appendChild(lab_road_stype);
+            var reset_road_stype = document.createElement('div');
+            reset_road_stype.innerHTML = 'clear filter';
+            reset_road_stype.className = 'filterlabel';
+            reset_road_stype.onclick = function() {
+                var options = document.getElementById("sel_road_stype").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_road_stype.appendChild(reset_road_stype);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_road_name = document.createElement('div');
@@ -3383,92 +3473,6 @@ binocularsIcon.parentNode.appendChild(textBox);
                 filterFunc();
             };
             div_road_refid.appendChild(reset_road_refid);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_road_ward = document.createElement('div');
-            div_road_ward.id = "div_road_ward";
-            div_road_ward.className= "filterselect";
-            document.getElementById("menu").appendChild(div_road_ward);
-            sel_road_ward = document.createElement('select');
-            sel_road_ward.multiple = true;
-            sel_road_ward.size = 4;
-            sel_road_ward.id = "sel_road_ward";
-            var road_ward_options_str = "";
-            sel_road_ward.onchange = function(){filterFunc()};
-            road_ward_options_str  += '<option value="1">1</option>';
-            road_ward_options_str  += '<option value="10">10</option>';
-            road_ward_options_str  += '<option value="11">11</option>';
-            road_ward_options_str  += '<option value="12">12</option>';
-            road_ward_options_str  += '<option value="13">13</option>';
-            road_ward_options_str  += '<option value="14">14</option>';
-            road_ward_options_str  += '<option value="15">15</option>';
-            road_ward_options_str  += '<option value="16">16</option>';
-            road_ward_options_str  += '<option value="17">17</option>';
-            road_ward_options_str  += '<option value="18">18</option>';
-            road_ward_options_str  += '<option value="19">19</option>';
-            road_ward_options_str  += '<option value="2">2</option>';
-            road_ward_options_str  += '<option value="20">20</option>';
-            road_ward_options_str  += '<option value="21">21</option>';
-            road_ward_options_str  += '<option value="22">22</option>';
-            road_ward_options_str  += '<option value="23">23</option>';
-            road_ward_options_str  += '<option value="3">3</option>';
-            road_ward_options_str  += '<option value="4">4</option>';
-            road_ward_options_str  += '<option value="5">5</option>';
-            road_ward_options_str  += '<option value="6">6</option>';
-            road_ward_options_str  += '<option value="7">7</option>';
-            road_ward_options_str  += '<option value="8">8</option>';
-            road_ward_options_str  += '<option value="9">9</option>';
-            sel_road_ward.innerHTML = road_ward_options_str;
-            div_road_ward.appendChild(sel_road_ward);
-            var lab_road_ward = document.createElement('div');
-            lab_road_ward.innerHTML = 'road_ward';
-            lab_road_ward.className = 'filterlabel';
-            div_road_ward.appendChild(lab_road_ward);
-            var reset_road_ward = document.createElement('div');
-            reset_road_ward.innerHTML = 'clear filter';
-            reset_road_ward.className = 'filterlabel';
-            reset_road_ward.onclick = function() {
-                var options = document.getElementById("sel_road_ward").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_road_ward.appendChild(reset_road_ward);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_road_stype = document.createElement('div');
-            div_road_stype.id = "div_road_stype";
-            div_road_stype.className= "filterselect";
-            document.getElementById("menu").appendChild(div_road_stype);
-            sel_road_stype = document.createElement('select');
-            sel_road_stype.multiple = true;
-            sel_road_stype.size = 4;
-            sel_road_stype.id = "sel_road_stype";
-            var road_stype_options_str = "";
-            sel_road_stype.onchange = function(){filterFunc()};
-            road_stype_options_str  += '<option value="Concrete">Concrete</option>';
-            road_stype_options_str  += '<option value="Earthen">Earthen</option>';
-            road_stype_options_str  += '<option value="Interlock">Interlock</option>';
-            road_stype_options_str  += '<option value="Metalled">Metalled</option>';
-            road_stype_options_str  += '<option value="PMC">PMC</option>';
-            sel_road_stype.innerHTML = road_stype_options_str;
-            div_road_stype.appendChild(sel_road_stype);
-            var lab_road_stype = document.createElement('div');
-            lab_road_stype.innerHTML = 'road_stype';
-            lab_road_stype.className = 'filterlabel';
-            div_road_stype.appendChild(lab_road_stype);
-            var reset_road_stype = document.createElement('div');
-            reset_road_stype.innerHTML = 'clear filter';
-            reset_road_stype.className = 'filterlabel';
-            reset_road_stype.onclick = function() {
-                var options = document.getElementById("sel_road_stype").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_road_stype.appendChild(reset_road_stype);
 			// Initialize the feature group to store editable layers
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
@@ -3477,7 +3481,7 @@ map.addLayer(drawnItems);
 var drawControl = new L.Control.Draw({
     position: 'bottomleft',
     edit: {
-        featureGroup: drawnItems // Remove this if you don't want bulk editing
+        featureGroup: drawnItems // Allows bulk editing
     },
     draw: {
         polyline: true,
@@ -3485,14 +3489,13 @@ var drawControl = new L.Control.Draw({
         marker: true
     }
 });
-map.addControl(drawControl);
+map.addControl(drawControl); // ✅ Add control to map
 
 // Event listener for when a shape is created
 map.on(L.Draw.Event.CREATED, function (event) {
     var layer = event.layer;
     drawnItems.addLayer(layer);
 
-    // Prompt for shape attributes
     var name = prompt('Enter a name for this shape:');
     var id = prompt('Enter an ID for this shape:');
     var category = prompt('Enter a category for this shape:');
@@ -3500,7 +3503,15 @@ map.on(L.Draw.Event.CREATED, function (event) {
     var amount = prompt('Enter the amount for this shape:');
     var year = prompt('Enter the year for this shape:');
 
-    // Attach properties to the feature
+    // Calculate area for polygons
+    var area = "N/A";
+    if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+        var geojson = layer.toGeoJSON();
+        area = turf.area(geojson); // Area in square meters
+        area = (area / 10000).toFixed(2) + " ha"; // Convert to hectares
+    }
+
+    // Attach properties
     layer.feature = layer.feature || {};
     layer.feature.type = "Feature";
     layer.feature.properties = {
@@ -3509,13 +3520,14 @@ map.on(L.Draw.Event.CREATED, function (event) {
         category: category,
         type_of_work: typeOfWork,
         amount: amount,
-        year: year
+        year: year,
+        area: area
     };
 
-    // Add an edit and delete button in the popup
+    // Bind popup with area displayed
     layer.bindPopup(generatePopupContent(layer));
 
-    saveToLocalStorage(); // Save the layer to localStorage
+    saveToLocalStorage();
 });
 
 // Function to generate popup content
@@ -3528,8 +3540,9 @@ function generatePopupContent(layer) {
         <strong>Type of Work:</strong> ${props.type_of_work || ''}<br>
         <strong>Amount:</strong> ${props.amount || ''}<br>
         <strong>Year:</strong> ${props.year || ''}<br>
-        <button onclick="editLayer(${layer._leaflet_id})">Edit</button>
-        <button onclick="deleteLayer(${layer._leaflet_id})">Delete</button>
+        <strong>Area:</strong> ${props.area || 'N/A'}<br>
+        <button onclick="editLayer('${layer._leaflet_id}')">Edit</button>
+        <button onclick="deleteLayer('${layer._leaflet_id}')">Delete</button>
     `;
 }
 
@@ -3538,9 +3551,20 @@ function editLayer(layerId) {
     var layer = drawnItems.getLayer(layerId);
     if (layer) {
         layer.editing.enable();
-        alert('Editing enabled. Drag to modify and click "Save" when done.');
+        alert('Editing enabled. Drag to modify and click to save.');
+
         map.once('click', function () {
             layer.editing.disable();
+            
+            // Recalculate area if it's a polygon
+            if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+                var geojson = layer.toGeoJSON();
+                var newArea = turf.area(geojson);
+                newArea = (newArea / 10000).toFixed(2) + " ha"; // Convert to hectares
+                layer.feature.properties.area = newArea;
+            }
+
+            layer.bindPopup(generatePopupContent(layer)); // ✅ Update popup after editing
             saveToLocalStorage();
             alert('Editing saved.');
         });
@@ -3573,7 +3597,15 @@ function loadFromLocalStorage() {
             onEachFeature: function (feature, layer) {
                 drawnItems.addLayer(layer);
 
-                // Add popup with edit and delete buttons
+                // Recalculate area for polygons
+                if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+                    var geojson = layer.toGeoJSON();
+                    var area = turf.area(geojson);
+                    area = (area / 10000).toFixed(2) + " ha"; // Convert to hectares
+                    layer.feature.properties.area = area;
+                }
+
+                // ✅ Restore popups after reloading from localStorage
                 layer.bindPopup(generatePopupContent(layer));
             }
         }).addTo(map);
